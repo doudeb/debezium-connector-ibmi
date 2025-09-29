@@ -136,6 +136,10 @@ public class As400OffsetContext extends CommonOffsetContext<SourceInfo> {
         sourceInfo.setSourceTime(time);
     }
 
+    public void setRelativeRecordNumber(Long rrn) {
+        sourceInfo.setRelativeRecordNumber(rrn);
+    }
+
     @Override
     public Struct getSourceInfo() {
         return sourceInfo.struct();

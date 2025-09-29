@@ -22,8 +22,10 @@ public class SourceInfo extends BaseSourceInfo {
 
     public static final String SNAPSHOT_KEY = "snapshot";
     public static final String JOURNAL_KEY = "journal";
+    public static final String RRN_KEY = "rrn";
     private Instant sourceTime;
     private String databaseName;
+    private Long relativeRecordNumber;
 
     protected SourceInfo(As400ConnectorConfig connectorConfig) {
         super(connectorConfig);
@@ -42,5 +44,13 @@ public class SourceInfo extends BaseSourceInfo {
     @Override
     protected String database() {
         return databaseName;
+    }
+
+    public Long getRelativeRecordNumber() {
+        return relativeRecordNumber;
+    }
+
+    public void setRelativeRecordNumber(Long relativeRecordNumber) {
+        this.relativeRecordNumber = relativeRecordNumber;
     }
 }

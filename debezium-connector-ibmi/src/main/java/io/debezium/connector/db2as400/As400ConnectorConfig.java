@@ -94,6 +94,17 @@ public class As400ConnectorConfig extends RelationalDatabaseConnectorConfig {
     public static final Field MAX_RETRIEVAL_TIMEOUT = Field.create("max.journal.timeout", "max time to fetch the journal entries",
             "Maximum time to fetch the journal entries in ms", DEFAULT_MAX_JOURNAL_TIMEOUT);
 
+    /**
+     * A field to include the RRN (Relative Record Number) in the source structure
+     */
+    public static final Field INCLUDE_RRN_IN_SOURCE = Field.create("include.rrn.in.source")
+            .withDisplayName("Include RRN in source")
+            .withType(Type.BOOLEAN)
+            .withDefault(false)
+            .withWidth(Width.SHORT)
+            .withImportance(Importance.LOW)
+            .withDescription("Whether to include the Relative Record Number (RRN) as a field in the source structure of change events");
+
     public static final Field TOPIC_NAMING_STRATEGY = Field.create("topic.naming.strategy")
             .withDisplayName("Topic naming strategy class")
             .withType(Type.CLASS)
@@ -176,6 +187,14 @@ public class As400ConnectorConfig extends RelationalDatabaseConnectorConfig {
         return config.getString(DIAGNOSTICS_FOLDER);
     }
 
+    public boolean isIncludeRrnInSource() {
+        if (config == null) {
+            return false;
+        }
+        Boolean value = config.getBoolean(INCLUDE_RRN_IN_SOURCE);
+        return value != null ? value : false;
+    }
+
     public JournalProcessedPosition getOffset() {
         final String receiver = config.getString(As400OffsetContext.RECEIVER);
         final String lib = config.getString(As400OffsetContext.RECEIVER_LIBRARY);
@@ -212,7 +231,7 @@ public class As400ConnectorConfig extends RelationalDatabaseConnectorConfig {
     public static Field.Set ALL_FIELDS = Field.setOf(JdbcConfiguration.HOSTNAME, USER, PASSWORD, SCHEMA, BUFFER_SIZE,
             RelationalDatabaseConnectorConfig.SNAPSHOT_SELECT_STATEMENT_OVERRIDES_BY_TABLE, SOCKET_TIMEOUT,
             MAX_SERVER_SIDE_ENTRIES, TOPIC_NAMING_STRATEGY, FROM_CCSID, TO_CCSID, SECURE,
-            DIAGNOSTICS_FOLDER);
+            DIAGNOSTICS_FOLDER, INCLUDE_RRN_IN_SOURCE);
 
     public static ConfigDef configDef() {
         final ConfigDef c = RelationalDatabaseConnectorConfig.CONFIG_DEFINITION.edit()
@@ -220,7 +239,7 @@ public class As400ConnectorConfig extends RelationalDatabaseConnectorConfig {
                 .type(
                         HOSTNAME, USER, PASSWORD, SCHEMA, BUFFER_SIZE,
                         SOCKET_TIMEOUT, FROM_CCSID, TO_CCSID, SECURE,
-                        DIAGNOSTICS_FOLDER)
+                        DIAGNOSTICS_FOLDER, INCLUDE_RRN_IN_SOURCE)
                 .connector(
                         SCHEMA_NAME_ADJUSTMENT_MODE)
                 .events(

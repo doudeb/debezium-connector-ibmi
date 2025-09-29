@@ -270,6 +270,9 @@ public class As400StreamingChangeEventSource implements StreamingChangeEventSour
                         final Object[] dataNext = r.decode(schema.getFileDecoder());
 
                         offsetContext.setSourceTime(eheader.getTime());
+                        if (connectorConfig.isIncludeRrnInSource() && eheader.getRelativeRecordNumber() != null) {
+                            offsetContext.setRelativeRecordNumber(eheader.getRelativeRecordNumber().longValue());
+                        }
 
                         final String txId = eheader.getCommitCycle().toString();
                         final TransactionContext txc = txMap.get(txId);
@@ -285,6 +288,9 @@ public class As400StreamingChangeEventSource implements StreamingChangeEventSour
                         // record added
                         final Object[] dataNext = r.decode(schema.getFileDecoder());
                         offsetContext.setSourceTime(eheader.getTime());
+                        if (connectorConfig.isIncludeRrnInSource() && eheader.getRelativeRecordNumber() != null) {
+                            offsetContext.setRelativeRecordNumber(eheader.getRelativeRecordNumber().longValue());
+                        }
 
                         final String txId = eheader.getCommitCycle().toString();
                         final TransactionContext txc = txMap.get(txId);
@@ -304,6 +310,9 @@ public class As400StreamingChangeEventSource implements StreamingChangeEventSour
                         final Object[] dataBefore = r.decode(schema.getFileDecoder());
 
                         offsetContext.setSourceTime(eheader.getTime());
+                        if (connectorConfig.isIncludeRrnInSource() && eheader.getRelativeRecordNumber() != null) {
+                            offsetContext.setRelativeRecordNumber(eheader.getRelativeRecordNumber().longValue());
+                        }
 
                         final String txId = eheader.getCommitCycle().toString();
                         final TransactionContext txc = txMap.get(txId);

@@ -1,0 +1,16 @@
+# Build Instructions for Debezium IBM i Connector with RRN Support
+
+1. First, ensure JAVA_HOME is set:
+   export JAVA_HOME=/path/to/your/jdk
+   export PATH=$JAVA_HOME/bin:$PATH
+
+2. Build the project:
+   ./mvnw clean package -DskipTests
+
+3. The compiled JAR will be located at:
+   debezium-connector-ibmi/target/debezium-connector-ibmi-*.jar
+
+4. To use the new include.rrn.in.source feature, add this to your connector configuration:
+   "include.rrn.in.source": true
+
+This will include the Relative Record Number (RRN) in the source metadata of change events.

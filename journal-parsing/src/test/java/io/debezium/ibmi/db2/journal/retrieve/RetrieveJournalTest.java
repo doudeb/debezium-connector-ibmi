@@ -26,8 +26,8 @@ class RetrieveJournalTest {
     public void testAlreadyProcessedOffsetSequenceReceiverAndReceiverLibrary() {
         JournalProcessedPosition positionMatches = firstPosition();
         EntryHeader entryHeader = new EntryHeader(-1, -1, -1l, positionMatches.getOffset(), BigInteger.TWO,
-                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1,
-                positionMatches.getReceiver().name(), positionMatches.getReceiver().library());
+                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1L,
+                positionMatches.getReceiver().name(), positionMatches.getReceiver().library(), BigInteger.ZERO);
         assertTrue(RetrieveJournal.alreadyProcessed(positionMatches, entryHeader), "compare sequence number, library and receiver match");
 
         JournalProcessedPosition positionIncorrectReceiver = new JournalProcessedPosition(BigInteger.ONE, new JournalReceiver("receiverDoesn'tMatch", "receiverLibrary"),
@@ -47,13 +47,13 @@ class RetrieveJournalTest {
     public void testAlreadyProcessedOffsetSequenceMissingReceiverAndReceiverLibrary() {
         JournalProcessedPosition positionMatches = firstPosition();
         EntryHeader entryHeader = new EntryHeader(-1, -1, -1l, positionMatches.getOffset(), BigInteger.TWO,
-                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1,
-                positionMatches.getReceiver().name(), positionMatches.getReceiver().library());
+                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1L,
+                positionMatches.getReceiver().name(), positionMatches.getReceiver().library(), BigInteger.ZERO);
         assertTrue(RetrieveJournal.alreadyProcessed(positionMatches, entryHeader), "compare only sequence number, library and receiver empty");
 
         EntryHeader entryHeaderDifferentOffset = new EntryHeader(-1, -1, -1l, positionMatches.getOffset().add(BigInteger.ONE), BigInteger.TWO,
-                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1,
-                "", "");
+                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1L,
+                "", "", BigInteger.ZERO);
         assertFalse(RetrieveJournal.alreadyProcessed(positionMatches, entryHeaderDifferentOffset), "compare only sequence number, library and receiver empty");
 
     }
@@ -64,15 +64,15 @@ class RetrieveJournalTest {
         JournalProcessedPosition positionMatchesNotProcessed = firstPosition().setProcessed(false);
 
         EntryHeader entryHeader = new EntryHeader(-1, -1, -1l, positionMatchesNotProcessed.getOffset(), BigInteger.TWO,
-                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1,
-                positionMatchesNotProcessed.getReceiver().name(), positionMatchesNotProcessed.getReceiver().library());
+                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1L,
+                positionMatchesNotProcessed.getReceiver().name(), positionMatchesNotProcessed.getReceiver().library(), BigInteger.ZERO);
 
         assertTrue(RetrieveJournal.alreadyProcessed(positionMatches, entryHeader), "compare sequence number, library and receiver match");
         assertFalse(RetrieveJournal.alreadyProcessed(positionMatchesNotProcessed, entryHeader), "compare sequence number, library and receiver match");
 
         EntryHeader entryHeaderEmptyReceiver = new EntryHeader(-1, -1, -1l, positionMatchesNotProcessed.getOffset(), BigInteger.TWO,
-                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1,
-                "", "");
+                Instant.ofEpochMilli(2l), 'Z', "UB", "OBJECT", BigInteger.TEN, -1, -1L,
+                "", "", BigInteger.ZERO);
 
         assertTrue(RetrieveJournal.alreadyProcessed(positionMatches, entryHeaderEmptyReceiver), "compare sequence number, library and receiver match");
         assertFalse(RetrieveJournal.alreadyProcessed(positionMatchesNotProcessed, entryHeaderEmptyReceiver), "compare only sequence number, library and receiver empty");
